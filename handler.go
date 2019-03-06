@@ -16,6 +16,13 @@ import (
 // query.
 type Handler interface {
 	ServeDNS(context.Context, MessageWriter, *Query)
+  Clear()
+	Set( k string, v map[Type][]Record )
+  Len() int
+  GetKey( k string ) (map[Type][]Record, bool)
+  DeleteKey( k string )
+  DeleteRecordInKey( k string, r Record )
+  GetAll() map[string]map[Type][]Record
 }
 
 // The HandlerFunc type is an adapter to allow the use of ordinary functions as
@@ -26,6 +33,34 @@ type HandlerFunc func(context.Context, MessageWriter, *Query)
 // ServeDNS calls f(w, r).
 func (f HandlerFunc) ServeDNS(ctx context.Context, w MessageWriter, r *Query) {
 	f(ctx, w, r)
+}
+
+func (f HandlerFunc) Clear() {
+  f.Clear()
+}
+
+func (f HandlerFunc) Set( k string, v map[Type][]Record ) {
+
+}
+
+func (f HandlerFunc) Len() int {
+  return 0
+}
+
+func (f HandlerFunc) GetKey( k string ) (map[Type][]Record, bool) {
+  return nil, false
+}
+
+func (f HandlerFunc) DeleteKey( k string ) {
+
+}
+
+func (f HandlerFunc) DeleteRecordInKey( k string, r Record ) {
+
+}
+
+func (f HandlerFunc) GetAll() map[string]map[Type][]Record {
+  return nil
 }
 
 // Recursor forwards a query and copies the response.

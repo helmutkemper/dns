@@ -11,7 +11,7 @@ import (
 )
 
 // A Server defines parameters for running a DNS server. The zero value for
-// Server is a valid configuration.
+// Server is a valid configuration
 type Server struct {
 	Addr      string      // TCP and UDP address to listen on, ":domain" if empty
 	Handler   Handler     // handler to invoke
@@ -25,6 +25,32 @@ type Server struct {
 	// reading data, and unpacking messages.
 	// If nil, logging is done via the log package's standard logger.
 	ErrorLog *log.Logger
+}
+
+func (s *Server)Clear(){
+	s.Handler.Clear()
+}
+
+func (s *Server) Set( k string, v map[Type][]Record ) {
+	s.Handler.Set( k, v )
+}
+
+func (s *Server) Len() int {
+	return s.Handler.Len()
+}
+
+func (s *Server) GetKey( k string ) (map[Type][]Record, bool) {
+	return s.Handler.GetKey( k )
+}
+
+func (s *Server) DeleteKey( k string ) {
+	s.Handler.DeleteKey( k )
+}
+func (s *Server) DeleteRecordInKey( k string, r Record ) {
+	s.Handler.DeleteKey( k )
+}
+func (s *Server) GetAll() map[string]map[Type][]Record {
+	return s.Handler.GetAll()
 }
 
 // ListenAndServe listens on both the TCP and UDP network address s.Addr and

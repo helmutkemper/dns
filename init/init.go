@@ -15,8 +15,8 @@ func init() {
 	net.DefaultResolver = &net.Resolver{
 		PreferGo: true,
 
-		Dial: (&dns.Client{
-			Resolver: new(dns.Cache),
+		Dial: (&__dns.Client{
+			Resolver: new(__dns.Cache),
 		}).Dial,
 	}
 }

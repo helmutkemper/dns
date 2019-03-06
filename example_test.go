@@ -16,9 +16,9 @@ func ExampleClient_overrideNameServers() {
 	net.DefaultResolver = &net.Resolver{
 		PreferGo: true,
 
-		Dial: (&dns.Client{
-			Transport: &dns.Transport{
-				Proxy: dns.NameServers{
+		Dial: (&__dns.Client{
+			Transport: &__dns.Transport{
+				Proxy: __dns.NameServers{
 					&net.UDPAddr{IP: net.IPv4(8, 8, 8, 8), Port: 53},
 					&net.UDPAddr{IP: net.IPv4(8, 8, 4, 4), Port: 53},
 				}.RoundRobin(),
@@ -38,16 +38,16 @@ func ExampleClient_overrideNameServers() {
 }
 
 func ExampleClient_dnsOverTLS() {
-	dnsLocal := dns.OverTLSAddr{
+	dnsLocal := __dns.OverTLSAddr{
 		Addr: &net.TCPAddr{
 			IP:   net.IPv4(192, 168, 8, 8),
 			Port: 853,
 		},
 	}
 
-	client := &dns.Client{
-		Transport: &dns.Transport{
-			Proxy: dns.NameServers{dnsLocal}.Random(rand.Reader),
+	client := &__dns.Client{
+		Transport: &__dns.Transport{
+			Proxy: __dns.NameServers{dnsLocal}.Random(rand.Reader),
 
 			TLSConfig: &tls.Config{
 				ServerName: "dns.local",
@@ -62,55 +62,55 @@ func ExampleClient_dnsOverTLS() {
 }
 
 func ExampleServer_authoritative() {
-	customTLD := &dns.Zone{
+	customTLD := &__dns.Zone{
 		Origin: "tld.",
 		TTL:    time.Hour,
-		SOA: &dns.SOA{
+		SOA: &__dns.SOA{
 			NS:     "dns.tld.",
 			MBox:   "hostmaster.tld.",
 			Serial: 1234,
 		},
-		RRs: dns.RRSet{
+		RRs: __dns.RRSet{
 			"1.app": {
-				dns.TypeA: {
-					&dns.A{A: net.IPv4(10, 42, 0, 1).To4()},
+				__dns.TypeA: {
+					&__dns.A{A: net.IPv4(10, 42, 0, 1).To4()},
 				},
-				dns.TypeAAAA: {
-					&dns.AAAA{AAAA: net.ParseIP("dead:beef::1")},
+				__dns.TypeAAAA: {
+					&__dns.AAAA{AAAA: net.ParseIP("dead:beef::1")},
 				},
 			},
 			"2.app": {
-				dns.TypeA: {
-					&dns.A{A: net.IPv4(10, 42, 0, 2).To4()},
+				__dns.TypeA: {
+					&__dns.A{A: net.IPv4(10, 42, 0, 2).To4()},
 				},
-				dns.TypeAAAA: {
-					&dns.AAAA{AAAA: net.ParseIP("dead:beef::2")},
+				__dns.TypeAAAA: {
+					&__dns.AAAA{AAAA: net.ParseIP("dead:beef::2")},
 				},
 			},
 			"3.app": {
-				dns.TypeA: {
-					&dns.A{A: net.IPv4(10, 42, 0, 3).To4()},
+				__dns.TypeA: {
+					&__dns.A{A: net.IPv4(10, 42, 0, 3).To4()},
 				},
-				dns.TypeAAAA: {
-					&dns.AAAA{AAAA: net.ParseIP("dead:beef::3")},
+				__dns.TypeAAAA: {
+					&__dns.AAAA{AAAA: net.ParseIP("dead:beef::3")},
 				},
 			},
 			"app": {
-				dns.TypeA: {
-					&dns.A{A: net.IPv4(10, 42, 0, 1).To4()},
-					&dns.A{A: net.IPv4(10, 42, 0, 2).To4()},
-					&dns.A{A: net.IPv4(10, 42, 0, 3).To4()},
+				__dns.TypeA: {
+					&__dns.A{A: net.IPv4(10, 42, 0, 1).To4()},
+					&__dns.A{A: net.IPv4(10, 42, 0, 2).To4()},
+					&__dns.A{A: net.IPv4(10, 42, 0, 3).To4()},
 				},
-				dns.TypeAAAA: {
-					&dns.AAAA{AAAA: net.ParseIP("dead:beef::1")},
-					&dns.AAAA{AAAA: net.ParseIP("dead:beef::2")},
-					&dns.AAAA{AAAA: net.ParseIP("dead:beef::3")},
+				__dns.TypeAAAA: {
+					&__dns.AAAA{AAAA: net.ParseIP("dead:beef::1")},
+					&__dns.AAAA{AAAA: net.ParseIP("dead:beef::2")},
+					&__dns.AAAA{AAAA: net.ParseIP("dead:beef::3")},
 				},
 			},
 		},
 	}
 
-	srv := &dns.Server{
+	srv := &__dns.Server{
 		Addr:    ":53351",
 		Handler: customTLD,
 	}
@@ -123,34 +123,34 @@ func ExampleServer_authoritative() {
 		log.Fatal(err)
 	}
 
-	query := &dns.Query{
+	query := &__dns.Query{
 		RemoteAddr: addr,
-		Message: &dns.Message{
-			Questions: []dns.Question{
+		Message: &__dns.Message{
+			Questions: []__dns.Question{
 				{
 					Name:  "app.tld.",
-					Type:  dns.TypeA,
-					Class: dns.ClassIN,
+					Type:  __dns.TypeA,
+					Class: __dns.ClassIN,
 				},
 				{
 					Name:  "app.tld.",
-					Type:  dns.TypeAAAA,
-					Class: dns.ClassIN,
+					Type:  __dns.TypeAAAA,
+					Class: __dns.ClassIN,
 				},
 			},
 		},
 	}
 
-	res, err := new(dns.Client).Do(context.Background(), query)
+	res, err := new(__dns.Client).Do(context.Background(), query)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	for _, answer := range res.Answers {
 		switch rec := answer.Record.(type) {
-		case *dns.A:
+		case *__dns.A:
 			fmt.Println(rec.A)
-		case *dns.AAAA:
+		case *__dns.AAAA:
 			fmt.Println(rec.AAAA)
 		default:
 			fmt.Println(rec)
@@ -166,19 +166,19 @@ func ExampleServer_authoritative() {
 }
 
 func ExampleServer_recursive() {
-	srv := &dns.Server{
+	srv := &__dns.Server{
 		Addr:    ":53352",
-		Handler: dns.HandlerFunc(dns.Recursor),
-		Forwarder: &dns.Client{
-			Transport: &dns.Transport{
-				Proxy: dns.NameServers{
+		Handler: __dns.HandlerFunc(__dns.Recursor),
+		Forwarder: &__dns.Client{
+			Transport: &__dns.Transport{
+				Proxy: __dns.NameServers{
 					&net.TCPAddr{IP: net.IPv4(8, 8, 8, 8), Port: 53},
 					&net.TCPAddr{IP: net.IPv4(8, 8, 4, 4), Port: 53},
 					&net.UDPAddr{IP: net.IPv4(8, 8, 8, 8), Port: 53},
 					&net.UDPAddr{IP: net.IPv4(8, 8, 4, 4), Port: 53},
 				}.RoundRobin(),
 			},
-			Resolver: new(dns.Cache),
+			Resolver: new(__dns.Cache),
 		},
 	}
 
@@ -190,28 +190,28 @@ func ExampleServer_recursive() {
 		log.Fatal(err)
 	}
 
-	query := &dns.Query{
+	query := &__dns.Query{
 		RemoteAddr: addr,
-		Message: &dns.Message{
+		Message: &__dns.Message{
 			RecursionDesired: true,
-			Questions: []dns.Question{
+			Questions: []__dns.Question{
 				{
 					Name:  "127.1.2.3.xip.io.",
-					Type:  dns.TypeA,
-					Class: dns.ClassIN,
+					Type:  __dns.TypeA,
+					Class: __dns.ClassIN,
 				},
 			},
 		},
 	}
 
-	res, err := new(dns.Client).Do(context.Background(), query)
+	res, err := new(__dns.Client).Do(context.Background(), query)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	for _, answer := range res.Answers {
 		switch rec := answer.Record.(type) {
-		case *dns.A:
+		case *__dns.A:
 			fmt.Println(rec.A)
 		default:
 			fmt.Println(rec)
@@ -222,33 +222,33 @@ func ExampleServer_recursive() {
 }
 
 func ExampleServer_recursiveWithZone() {
-	customTLD := &dns.Zone{
+	customTLD := &__dns.Zone{
 		Origin: "tld.",
-		RRs: dns.RRSet{
+		RRs: __dns.RRSet{
 			"foo": {
-				dns.TypeA: {
-					&dns.A{A: net.IPv4(127, 0, 0, 1).To4()},
+				__dns.TypeA: {
+					&__dns.A{A: net.IPv4(127, 0, 0, 1).To4()},
 				},
 			},
 		},
 	}
 
-	mux := new(dns.ResolveMux)
-	mux.Handle(dns.TypeANY, "tld.", customTLD)
+	mux := new(__dns.ResolveMux)
+	mux.Handle(__dns.TypeANY, "tld.", customTLD)
 
-	srv := &dns.Server{
+	srv := &__dns.Server{
 		Addr:    ":53353",
 		Handler: mux,
-		Forwarder: &dns.Client{
-			Transport: &dns.Transport{
-				Proxy: dns.NameServers{
+		Forwarder: &__dns.Client{
+			Transport: &__dns.Transport{
+				Proxy: __dns.NameServers{
 					&net.TCPAddr{IP: net.IPv4(8, 8, 8, 8), Port: 53},
 					&net.TCPAddr{IP: net.IPv4(8, 8, 8, 8), Port: 53},
 					&net.UDPAddr{IP: net.IPv4(8, 8, 4, 4), Port: 53},
 					&net.UDPAddr{IP: net.IPv4(8, 8, 4, 4), Port: 53},
 				}.RoundRobin(),
 			},
-			Resolver: new(dns.Cache),
+			Resolver: new(__dns.Cache),
 		},
 	}
 
@@ -260,33 +260,33 @@ func ExampleServer_recursiveWithZone() {
 		log.Fatal(err)
 	}
 
-	query := &dns.Query{
+	query := &__dns.Query{
 		RemoteAddr: addr,
-		Message: &dns.Message{
+		Message: &__dns.Message{
 			RecursionDesired: true,
-			Questions: []dns.Question{
+			Questions: []__dns.Question{
 				{
 					Name:  "127.0.0.127.xip.io.",
-					Type:  dns.TypeA,
-					Class: dns.ClassIN,
+					Type:  __dns.TypeA,
+					Class: __dns.ClassIN,
 				},
 				{
 					Name:  "foo.tld.",
-					Type:  dns.TypeA,
-					Class: dns.ClassIN,
+					Type:  __dns.TypeA,
+					Class: __dns.ClassIN,
 				},
 			},
 		},
 	}
 
-	res, err := new(dns.Client).Do(context.Background(), query)
+	res, err := new(__dns.Client).Do(context.Background(), query)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	for _, answer := range res.Answers {
 		switch rec := answer.Record.(type) {
-		case *dns.A:
+		case *__dns.A:
 			fmt.Println(rec.A)
 		default:
 			fmt.Println(rec)

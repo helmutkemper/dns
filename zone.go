@@ -6,9 +6,6 @@ import (
 	"time"
 )
 
-// RRSet is a set of resource records indexed by name and type.
-type RRSet map[string]map[Type][]Record
-
 // Zone is a contiguous set DNS records under an origin domain name.
 type Zone struct {
 	Origin string
@@ -17,6 +14,34 @@ type Zone struct {
 	SOA *SOA
 
 	RRs RRSet
+}
+
+func(z *Zone) Clear(){
+  z.RRs.Clear()
+}
+
+func(z *Zone) Set( k string, v map[Type][]Record ){
+	z.RRs.Set( k, v )
+}
+
+func(z *Zone) Len() int {
+  return z.RRs.Len()
+}
+
+func(z *Zone) GetKey( k string ) (map[Type][]Record, bool) {
+  return z.RRs.GetKey( k )
+}
+
+func(z *Zone) DeleteKey( k string ) {
+  z.RRs.DeleteKey( k )
+}
+
+func(z *Zone) DeleteRecordInKey( k string, r Record ) {
+  z.RRs.DeleteRecordInKey( k, r )
+}
+
+func(z *Zone) GetAll() map[string]map[Type][]Record {
+  return z.RRs.GetAll()
 }
 
 // ServeDNS answers DNS queries in zone z.
@@ -37,7 +62,7 @@ func (z *Zone) ServeDNS(ctx context.Context, w MessageWriter, r *Query) {
 
 		dn := q.Name[:len(q.Name)-len(z.Origin)-1]
 
-		rrs, ok := z.RRs[dn]
+		rrs, ok := z.RRs.GetKey(dn)
 		if !ok {
 			continue
 		}
@@ -50,7 +75,7 @@ func (z *Zone) ServeDNS(ctx context.Context, w MessageWriter, r *Query) {
 				name := rr.(*CNAME).CNAME
 				dn := name[:len(name)-len(z.Origin)-1]
 
-				if rrs, ok := z.RRs[dn]; ok {
+				if rrs, ok := z.RRs.GetKey(dn); ok {
 					for _, rr := range rrs[q.Type] {
 						w.Answer(name, z.TTL, rr)
 					}
