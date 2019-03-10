@@ -12,20 +12,89 @@ type RRSet struct {
   l sync.Mutex
   m map[string]map[Type][]Record
   init bool
+  onChange func( string, map[string]map[Type][]Record )
+  onSetKey func( string, map[Type][]Record )
+  onDeleteKey func( string, map[Type][]Record )
+  onDeleteKeyInRecord func( string, map[Type][]Record )
+  onAppendKeyInRecord func( string, map[Type][]Record )
+  
+}
+
+func(el *RRSet)SetOnChange( v func( string, map[string]map[Type][]Record ) ){
+  el.onChange = v
+}
+
+func(el *RRSet)SetOnSetKey( v func( string, map[Type][]Record ) ){
+  el.onSetKey = v
+}
+
+func(el *RRSet)SetDeleteKey( v func( string, map[Type][]Record ) ){
+  el.onDeleteKey = v
+}
+
+func(el *RRSet)SetOnDeleteKeyInRecord( v func( string, map[Type][]Record ) ){
+  el.onDeleteKeyInRecord = v
+}
+
+func(el *RRSet)SetOnAppendKeyInRecord( v func( string, map[Type][]Record ) ){
+  el.onAppendKeyInRecord = v
+}
+
+func(el *RRSet)deferOnChange( k string ){
+  if el.onChange != nil {
+    el.onChange( k, el.m )
+  }
+}
+
+func(el *RRSet)deferOnSetKey( k string ){
+  if el.onSetKey != nil {
+    el.onSetKey( k, el.m[k] )
+  }
+}
+
+func(el *RRSet)deferDeleteKey( k string ){
+  if el.onDeleteKey != nil {
+    el.onDeleteKey( k, el.m[k] )
+  }
+}
+
+func(el *RRSet)deferOnDeleteKeyInRecord( k string ){
+  if el.onDeleteKeyInRecord != nil {
+    el.onDeleteKeyInRecord( k, el.m[k] )
+  }
+}
+
+func(el *RRSet)deferOnAppendKeyInRecord( k string ){
+  if el.onAppendKeyInRecord != nil {
+    el.onAppendKeyInRecord( k, el.m[k] )
+  }
 }
 
 // Clear RRSet
 func(el *RRSet)Clear(){
   el.l.Lock()
+  defer el.deferOnChange("")
   defer el.l.Unlock()
   
   el.init = true
   el.m = make( map[string]map[Type][]Record )
 }
 
-// Set a new record
-func(el *RRSet)Set( k string, v map[Type][]Record ){
+func(el *RRSet)Set( v map[string]map[Type][]Record ){
   el.l.Lock()
+  defer el.deferOnChange("")
+  defer el.l.Unlock()
+  
+  el.init = true
+  
+  el.m = v
+}
+
+// Set a new record
+func(el *RRSet)SetKey( k string, v map[Type][]Record ){
+  el.l.Lock()
+  defer el.deferOnSetKey(k)
+  defer el.deferOnChange(k)
   defer el.l.Unlock()
   
   if el.init == false {
@@ -57,6 +126,8 @@ func(el *RRSet)GetKey( k string ) (map[Type][]Record, bool) {
 // Delete record by given key
 func(el *RRSet)DeleteKey( k string ) {
   el.l.Lock()
+  defer el.deferDeleteKey(k)
+  defer el.deferOnChange(k)
   defer el.l.Unlock()
   
   delete( el.m, k )
@@ -65,6 +136,8 @@ func(el *RRSet)DeleteKey( k string ) {
 // Delete record inside a given key
 func(el *RRSet)DeleteRecordInKey( k string, r Record ) {
   el.l.Lock()
+  defer el.deferOnDeleteKeyInRecord(k)
+  defer el.deferOnChange(k)
   defer el.l.Unlock()
   
   recordList := el.m[k]
@@ -212,9 +285,11 @@ func(el *RRSet)DeleteRecordInKey( k string, r Record ) {
 
 func(el *RRSet)AppendRecordInKey( k string, r Record ) {
   el.l.Lock()
+  defer el.deferOnAppendKeyInRecord(k)
+  defer el.deferOnChange(k)
   defer el.l.Unlock()
   
-  if len(el.m) == 0 {
+  if el.init == false {
     el.init = true
     el.m = make( map[string]map[Type][]Record )
   }
