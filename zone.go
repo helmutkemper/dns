@@ -40,6 +40,10 @@ func(z *Zone) DeleteRecordInKey( k string, r Record ) {
   z.RRs.DeleteRecordInKey( k, r )
 }
 
+func(z *Zone) AppendRecordInKey( k string, r Record ) {
+	z.RRs.AppendRecordInKey( k, r )
+}
+
 func(z *Zone) GetAll() map[string]map[Type][]Record {
   return z.RRs.GetAll()
 }

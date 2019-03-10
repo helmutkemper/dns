@@ -453,6 +453,7 @@ type Record interface {
 	Length(Compressor) (int, error)
 	Pack([]byte, Compressor) ([]byte, error)
 	Unpack([]byte, Decompressor) ([]byte, error)
+	Get() interface{}
 }
 
 // A A is a DNS A record.
@@ -487,6 +488,8 @@ func (a *A) Unpack(b []byte, _ Decompressor) ([]byte, error) {
 	return b[4:], nil
 }
 
+func (a *A) Get() interface{} { return a }
+
 // AAAA is a DNS AAAA record.
 type AAAA struct {
 	AAAA net.IP
@@ -519,6 +522,8 @@ func (a *AAAA) Unpack(b []byte, _ Decompressor) ([]byte, error) {
 	return b[16:], nil
 }
 
+func (a *AAAA) Get() interface{} { return a }
+
 // CNAME is a DNS CNAME record.
 type CNAME struct {
 	CNAME string
@@ -543,6 +548,8 @@ func (c *CNAME) Unpack(b []byte, dec Decompressor) ([]byte, error) {
 	c.CNAME, b, err = dec.Unpack(b)
 	return b, err
 }
+
+func (c *CNAME) Get() interface{} { return c }
 
 // SOA is a DNS SOA record.
 type SOA struct {
@@ -642,6 +649,8 @@ func (s *SOA) Unpack(b []byte, dec Decompressor) ([]byte, error) {
 	return b[20:], nil
 }
 
+func (s *SOA) Get() interface{} { return s }
+
 // PTR is a DNS PTR record.
 type PTR struct {
 	PTR string
@@ -666,6 +675,8 @@ func (p *PTR) Unpack(b []byte, dec Decompressor) ([]byte, error) {
 	p.PTR, b, err = dec.Unpack(b)
 	return b, err
 }
+
+func (p *PTR) Get() interface{} { return p }
 
 // MX is a DNS MX record.
 type MX struct {
@@ -711,6 +722,8 @@ func (m *MX) Unpack(b []byte, dec Decompressor) ([]byte, error) {
 	return b, err
 }
 
+func (m *MX) Get() interface{} { return m }
+
 // NS is a DNS MX record.
 type NS struct {
 	NS string
@@ -735,6 +748,8 @@ func (n *NS) Unpack(b []byte, dec Decompressor) ([]byte, error) {
 	n.NS, b, err = dec.Unpack(b)
 	return b, err
 }
+
+func (n *NS) Get() interface{} { return n }
 
 // TXT is a DNS TXT record.
 type TXT struct {
@@ -781,6 +796,8 @@ func (t *TXT) Unpack(b []byte, _ Decompressor) ([]byte, error) {
 	t.TXT = txts
 	return nil, nil
 }
+
+func (t *TXT) Get() interface{} { return t }
 
 // SRV is a DNS SRV record.
 type SRV struct {
@@ -843,6 +860,8 @@ func (s *SRV) Unpack(b []byte, _ Decompressor) ([]byte, error) {
 	return b, err
 }
 
+func (s *SRV) Get() interface{} { return s }
+
 // DNAME is a DNS DNAME record.
 type DNAME struct {
 	DNAME string
@@ -867,6 +886,8 @@ func (d *DNAME) Unpack(b []byte, dec Decompressor) ([]byte, error) {
 	d.DNAME, b, err = dec.Unpack(b)
 	return b, err
 }
+
+func (d *DNAME) Get() interface{} { return d }
 
 // OPT is a DNS OPT record.
 type OPT struct {
@@ -910,6 +931,8 @@ func (o *OPT) Unpack(b []byte, _ Decompressor) ([]byte, error) {
 	}
 	return b, nil
 }
+
+func (o *OPT) Get() interface{} { return o }
 
 // type CAA is a DNS CAA record.
 type CAA struct {
@@ -973,3 +996,5 @@ func (c *CAA) Unpack(b []byte, _ Decompressor) ([]byte, error) {
 
 	return nil, nil
 }
+
+func (c *CAA) Get() interface{} { return c }

@@ -22,6 +22,7 @@ type Handler interface {
   GetKey( k string ) (map[Type][]Record, bool)
   DeleteKey( k string )
   DeleteRecordInKey( k string, r Record )
+	AppendRecordInKey( k string, r Record )
   GetAll() map[string]map[Type][]Record
 }
 
@@ -56,6 +57,10 @@ func (f HandlerFunc) DeleteKey( k string ) {
 }
 
 func (f HandlerFunc) DeleteRecordInKey( k string, r Record ) {
+
+}
+
+func (f HandlerFunc) AppendRecordInKey( k string, r Record ) {
 
 }
 

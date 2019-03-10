@@ -47,7 +47,10 @@ func (s *Server) DeleteKey( k string ) {
 	s.Handler.DeleteKey( k )
 }
 func (s *Server) DeleteRecordInKey( k string, r Record ) {
-	s.Handler.DeleteKey( k )
+	s.Handler.DeleteRecordInKey( k, r )
+}
+func (s *Server) AppendRecordInKey( k string, r Record ) {
+	s.Handler.AppendRecordInKey( k, r )
 }
 func (s *Server) GetAll() map[string]map[Type][]Record {
 	return s.Handler.GetAll()
