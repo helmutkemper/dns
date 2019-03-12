@@ -31,8 +31,12 @@ func (s *Server)Clear(){
 	s.Handler.Clear()
 }
 
-func (s *Server) Set( k string, v map[Type][]Record ) {
-	s.Handler.Set( k, v )
+func (s *Server) Set( v map[string]map[Type][]Record ){
+	s.Handler.Set( v )
+}
+
+func (s *Server) SetKey( k string, v map[Type][]Record ) {
+	s.Handler.SetKey( k, v )
 }
 
 func (s *Server) Len() int {
@@ -54,6 +58,46 @@ func (s *Server) AppendRecordInKey( k string, r Record ) {
 }
 func (s *Server) GetAll() map[string]map[Type][]Record {
 	return s.Handler.GetAll()
+}
+
+func(s *Server)SetBeforeOnChange( v func( string, map[string]map[Type][]Record ) ){
+	s.Handler.SetBeforeOnChange( v )
+}
+
+func(s *Server)SetBeforeOnSetKey( v func( string, map[Type][]Record ) ){
+	s.Handler.SetBeforeOnSetKey( v )
+}
+
+func(s *Server)SetBeforeDeleteKey( v func( string, map[Type][]Record ) ){
+	s.Handler.SetBeforeDeleteKey( v )
+}
+
+func(s *Server)SetBeforeOnDeleteKeyInRecord( v func( string, map[Type][]Record ) ){
+	s.Handler.SetBeforeOnDeleteKeyInRecord( v )
+}
+
+func(s *Server)SetBeforeOnAppendKeyInRecord( v func( string, map[Type][]Record ) ){
+	s.Handler.SetBeforeOnAppendKeyInRecord( v )
+}
+
+func(s *Server)SetOnChange( v func( string, map[string]map[Type][]Record ) ){
+	s.Handler.SetOnChange( v )
+}
+
+func(s *Server)SetOnSetKey( v func( string, map[Type][]Record ) ){
+	s.Handler.SetOnSetKey( v )
+}
+
+func(s *Server)SetDeleteKey( v func( string, map[Type][]Record ) ){
+	s.Handler.SetDeleteKey( v )
+}
+
+func(s *Server)SetOnDeleteKeyInRecord( v func( string, map[Type][]Record ) ){
+	s.Handler.SetOnDeleteKeyInRecord( v )
+}
+
+func(s *Server)SetOnAppendKeyInRecord( v func( string, map[Type][]Record ) ){
+	s.Handler.SetOnAppendKeyInRecord( v )
 }
 
 // ListenAndServe listens on both the TCP and UDP network address s.Addr and

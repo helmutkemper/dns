@@ -17,13 +17,24 @@ import (
 type Handler interface {
 	ServeDNS(context.Context, MessageWriter, *Query)
   Clear()
-	Set( k string, v map[Type][]Record )
+	Set( map[string]map[Type][]Record )
+	SetKey( string, map[Type][]Record )
   Len() int
-  GetKey( k string ) (map[Type][]Record, bool)
-  DeleteKey( k string )
-  DeleteRecordInKey( k string, r Record )
-	AppendRecordInKey( k string, r Record )
+  GetKey( string ) (map[Type][]Record, bool)
+  DeleteKey( string )
+  DeleteRecordInKey( string, Record )
+	AppendRecordInKey( string, Record )
   GetAll() map[string]map[Type][]Record
+	SetBeforeOnChange( func( string, map[string]map[Type][]Record ) )
+	SetBeforeOnSetKey( func( string, map[Type][]Record ) )
+	SetBeforeDeleteKey( func( string, map[Type][]Record ) )
+	SetBeforeOnDeleteKeyInRecord( func( string, map[Type][]Record ) )
+	SetBeforeOnAppendKeyInRecord( func( string, map[Type][]Record ) )
+	SetOnChange( func( string, map[string]map[Type][]Record ) )
+	SetOnSetKey( func( string, map[Type][]Record ) )
+	SetDeleteKey( func( string, map[Type][]Record ) )
+	SetOnDeleteKeyInRecord( func( string, map[Type][]Record ) )
+	SetOnAppendKeyInRecord( func( string, map[Type][]Record ) )
 }
 
 // The HandlerFunc type is an adapter to allow the use of ordinary functions as
@@ -37,10 +48,14 @@ func (f HandlerFunc) ServeDNS(ctx context.Context, w MessageWriter, r *Query) {
 }
 
 func (f HandlerFunc) Clear() {
-  f.Clear()
+
 }
 
-func (f HandlerFunc) Set( k string, v map[Type][]Record ) {
+func (f HandlerFunc) Set( v map[string]map[Type][]Record ) {
+
+}
+
+func (f HandlerFunc) SetKey( k string, v map[Type][]Record ) {
 
 }
 
@@ -65,7 +80,47 @@ func (f HandlerFunc) AppendRecordInKey( k string, r Record ) {
 }
 
 func (f HandlerFunc) GetAll() map[string]map[Type][]Record {
-  return nil
+	return nil
+}
+
+func (f HandlerFunc) SetBeforeOnChange( v func( string, map[string]map[Type][]Record ) ){
+
+}
+
+func (f HandlerFunc) SetBeforeOnSetKey( v func( string, map[Type][]Record ) ){
+
+}
+
+func (f HandlerFunc) SetBeforeDeleteKey( v func( string, map[Type][]Record ) ){
+
+}
+
+func (f HandlerFunc) SetBeforeOnDeleteKeyInRecord( v func( string, map[Type][]Record ) ){
+
+}
+
+func (f HandlerFunc) SetBeforeOnAppendKeyInRecord( v func( string, map[Type][]Record ) ){
+
+}
+
+func (f HandlerFunc) SetOnChange( v func( string, map[string]map[Type][]Record ) ){
+
+}
+
+func (f HandlerFunc) SetOnSetKey( v func( string, map[Type][]Record ) ){
+
+}
+
+func (f HandlerFunc) SetDeleteKey( v func( string, map[Type][]Record ) ){
+
+}
+
+func (f HandlerFunc) SetOnDeleteKeyInRecord( v func( string, map[Type][]Record ) ){
+
+}
+
+func (f HandlerFunc) SetOnAppendKeyInRecord( v func( string, map[Type][]Record ) ){
+
 }
 
 // Recursor forwards a query and copies the response.

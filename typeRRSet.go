@@ -18,6 +18,32 @@ type RRSet struct {
   onDeleteKeyInRecord func( string, map[Type][]Record )
   onAppendKeyInRecord func( string, map[Type][]Record )
   
+  beforeOnChange func( string, map[string]map[Type][]Record )
+  beforeOnSetKey func( string, map[Type][]Record )
+  beforeOnDeleteKey func( string, map[Type][]Record )
+  beforeOnDeleteKeyInRecord func( string, map[Type][]Record )
+  beforeOnAppendKeyInRecord func( string, map[Type][]Record )
+  
+}
+
+func(el *RRSet)SetBeforeOnChange( v func( string, map[string]map[Type][]Record ) ){
+  el.beforeOnChange = v
+}
+
+func(el *RRSet)SetBeforeOnSetKey( v func( string, map[Type][]Record ) ){
+  el.beforeOnSetKey = v
+}
+
+func(el *RRSet)SetBeforeDeleteKey( v func( string, map[Type][]Record ) ){
+  el.beforeOnDeleteKey = v
+}
+
+func(el *RRSet)SetBeforeOnDeleteKeyInRecord( v func( string, map[Type][]Record ) ){
+  el.beforeOnDeleteKeyInRecord = v
+}
+
+func(el *RRSet)SetBeforeOnAppendKeyInRecord( v func( string, map[Type][]Record ) ){
+  el.beforeOnAppendKeyInRecord = v
 }
 
 func(el *RRSet)SetOnChange( v func( string, map[string]map[Type][]Record ) ){
@@ -41,6 +67,7 @@ func(el *RRSet)SetOnAppendKeyInRecord( v func( string, map[Type][]Record ) ){
 }
 
 func(el *RRSet)deferOnChange( k string ){
+  fmt.Printf("%T\n%v\n", el.onChange, el.onChange)
   if el.onChange != nil {
     el.onChange( k, el.m )
   }
