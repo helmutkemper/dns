@@ -52,11 +52,15 @@ func(z *Zone) GetAll() map[string]map[Type][]Record {
   return z.RRs.GetAll()
 }
 
-func(z *Zone) SetBeforeOnChange( v func( string, map[string]map[Type][]Record ) ){
+func(z *Zone) SetBeforeOnClear( v func( map[string]map[Type][]Record ) ){
+	z.RRs.SetBeforeOnClear( v )
+}
+
+func(z *Zone) SetBeforeOnChange( v func( Event, string, interface{}, interface{} ) ){
 	z.RRs.SetBeforeOnChange( v )
 }
 
-func(z *Zone) SetBeforeOnSetKey( v func( string, map[Type][]Record ) ){
+func(z *Zone) SetBeforeOnSetKey( v func( string, map[Type][]Record, map[Type][]Record ) ){
 	z.RRs.SetBeforeOnSetKey( v )
 }
 
@@ -64,31 +68,35 @@ func(z *Zone) SetBeforeDeleteKey( v func( string, map[Type][]Record ) ){
 	z.RRs.SetBeforeDeleteKey( v )
 }
 
-func(z *Zone) SetBeforeOnDeleteKeyInRecord( v func( string, map[Type][]Record ) ){
+func(z *Zone) SetBeforeOnDeleteKeyInRecord( v func( string, map[Type][]Record, map[Type][]Record ) ){
 	z.RRs.SetBeforeOnDeleteKeyInRecord( v )
 }
 
-func(z *Zone) SetBeforeOnAppendKeyInRecord( v func( string, map[Type][]Record ) ){
+func(z *Zone) SetBeforeOnAppendKeyInRecord( v func( string, map[Type][]Record, map[Type][]Record ) ){
 	z.RRs.SetBeforeOnAppendKeyInRecord( v )
 }
 
-func(z *Zone) SetOnChange( v func( string, map[string]map[Type][]Record ) ){
+func(z *Zone) SetOnClear( v func( map[string]map[Type][]Record ) ){
+	z.RRs.SetOnClear( v )
+}
+
+func(z *Zone) SetOnChange( v func( Event, string, interface{}, interface{} ) ){
 	z.RRs.SetOnChange( v )
 }
 
-func(z *Zone) SetOnSetKey( v func( string, map[Type][]Record ) ){
+func(z *Zone) SetOnSetKey( v func( string, map[Type][]Record, map[Type][]Record ) ){
 	z.RRs.SetOnSetKey( v )
 }
 
-func(z *Zone) SetDeleteKey( v func( string, map[Type][]Record ) ){
-	z.RRs.SetDeleteKey( v )
+func(z *Zone) SetOnDeleteKey( v func( string, map[Type][]Record ) ){
+	z.RRs.SetOnDeleteKey( v )
 }
 
-func(z *Zone) SetOnDeleteKeyInRecord( v func( string, map[Type][]Record ) ){
+func(z *Zone) SetOnDeleteKeyInRecord( v func( string, map[Type][]Record, map[Type][]Record ) ){
 	z.RRs.SetOnDeleteKeyInRecord( v )
 }
 
-func(z *Zone) SetOnAppendKeyInRecord( v func( string, map[Type][]Record ) ){
+func(z *Zone) SetOnAppendKeyInRecord( v func( string, map[Type][]Record, map[Type][]Record ) ){
 	z.RRs.SetOnAppendKeyInRecord( v )
 }
 

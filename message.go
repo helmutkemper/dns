@@ -18,8 +18,32 @@ import (
 var nbo = binary.BigEndian
 
 // A Type is a type of DNS request and response.
-//todo: type ToString
 type Type uint16
+
+func(el Type)String() string {
+	switch el {
+	case 1:  return "TypeA"
+	case 2:  return "TypeNS"
+	case 5:  return "TypeCNAME"
+	case 6:  return "TypeSOA"
+	case 11: return "TypeWKS"
+	case 12: return "TypePTR"
+	case 13: return "TypeHINFO"
+	case 14: return "TypeMINFO"
+	case 15: return "TypeMX"
+	case 16: return "TypeTXT"
+	case 28: return "TypeAAAA"
+	case 33: return "TypeSRV"
+	case 39: return "TypeDNAME"
+	case 41: return "TypeOPT"
+	case 252: return "TypeAXFR"
+	case 255: return "TypeALL"
+	case 257: return "TypeCAA"
+	case 0: return "TypeANY"
+	}
+	
+	return ""
+}
 
 // A Class is a type of network.
 type Class uint16
