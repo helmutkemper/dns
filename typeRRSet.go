@@ -132,7 +132,10 @@ func(el *RRSet)Clear(){
     el.m = make( map[string]map[Type][]Record )
   }
   
-  old := el.m
+  var old = make( map[string]map[Type][]Record )
+  for k, v := range el.m{
+    old[k] = v
+  }
   
   defer el.deferOnClear( old )
   defer el.deferOnChange(KEventClear, "", old)
@@ -164,7 +167,10 @@ func(el *RRSet)Set( v map[string]map[Type][]Record ){
     el.m = make( map[string]map[Type][]Record )
   }
   
-  old := el.m
+  var old = make( map[string]map[Type][]Record )
+  for k, v := range el.m{
+    old[k] = v
+  }
   
   defer el.deferOnSet( old )
   defer el.deferOnChange(KEventSet,"", old)
@@ -186,7 +192,10 @@ func(el *RRSet)Set( v map[string]map[Type][]Record ){
 func(el *RRSet)SetKey( k string, v map[Type][]Record ){
   el.l.Lock()
   
-  old := el.m[k]
+  var old = make( map[Type][]Record )
+  for k, v := range el.m[k]{
+    old[k] = v
+  }
   
   defer el.deferOnSetKey(k, old)
   defer el.deferOnChange(KEventSetKey, k, old)
@@ -230,7 +239,10 @@ func(el *RRSet)GetKey( k string ) (map[Type][]Record, bool) {
 func(el *RRSet)DeleteKey( k string ) {
   el.l.Lock()
   
-  old := el.m[k]
+  var old = make( map[Type][]Record )
+  for k, v := range el.m[k]{
+    old[k] = v
+  }
   
   defer el.deferDeleteKey(k, old)
   defer el.deferOnChange(KEventDeleteKey, k, old)
@@ -251,7 +263,11 @@ func(el *RRSet)DeleteKey( k string ) {
 func(el *RRSet)DeleteRecordInKey( k string, r Record ) {
   el.l.Lock()
   
-  old := el.m[k]
+  var old = make( map[Type][]Record )
+  for k, v := range el.m[k]{
+    old[k] = v
+  }
+  
   New := el.m[k]
   recordData := r.Get()
   
@@ -416,7 +432,11 @@ func(el *RRSet)AppendRecordInKey( k string, r Record ) {
     el.m = make( map[string]map[Type][]Record )
   }
   
-  old := el.m[k]
+  var old = make( map[Type][]Record )
+  for k, v := range el.m[k]{
+    old[k] = v
+  }
+  
   New := el.m[k]
   
   defer el.deferOnAppendKeyInRecord(k, old)
