@@ -1,7 +1,6 @@
 package dns
 
 import (
-	"fmt"
 	"reflect"
 	"sync"
 )
@@ -189,7 +188,7 @@ func (el *RRSet) Set(v map[string]map[Type][]Record) {
 // Set a new record on given key
 func (el *RRSet) SetKey(k string, v map[Type][]Record) {
 	el.l.Lock()
-	fmt.Printf("entrou\n")
+
 	var old = make(map[Type][]Record)
 	for k, v := range el.m[k] {
 		old[k] = v
