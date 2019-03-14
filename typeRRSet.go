@@ -1,7 +1,6 @@
 package dns
 
 import (
-	"context"
 	"fmt"
 	"reflect"
 	"sync"
@@ -30,8 +29,6 @@ type RRSet struct {
 	beforeOnDeleteKeyInRecord func(k string, old map[Type][]Record, new map[Type][]Record)
 	beforeOnAppendKeyInRecord func(k string, old map[Type][]Record, new map[Type][]Record)
 }
-
-func (el *RRSet) ServeDNS(context.Context, MessageWriter, *Query) {}
 
 func (el *RRSet) SetBeforeOnClear(v func(map[string]map[Type][]Record)) {
 	el.beforeOnClear = v

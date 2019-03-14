@@ -15,7 +15,7 @@ import (
 // an query upstream. Only unanswered questions are included in the upstream
 // query.
 type Handler interface {
-	//ServeDNS(context.Context, MessageWriter, *Query)
+	ServeDNS(context.Context, MessageWriter, *Query)
 	Clear()
 	Set(map[string]map[Type][]Record)
 	SetKey(string, map[Type][]Record)
