@@ -15,28 +15,28 @@ import (
 // an query upstream. Only unanswered questions are included in the upstream
 // query.
 type Handler interface {
-	ServeDNS(context.Context, MessageWriter, *Query)
-  Clear()
-	Set( map[string]map[Type][]Record )
-	SetKey( string, map[Type][]Record )
-  Len() int
-  GetKey( string ) (map[Type][]Record, bool)
-  DeleteKey( string )
-  DeleteRecordInKey( string, Record )
-	AppendRecordInKey( string, Record )
-  GetAll() map[string]map[Type][]Record
-	SetBeforeOnClear( func( map[string]map[Type][]Record ) )
-	SetBeforeOnChange( func( Event, string, interface{}, interface{} ) )
-	SetBeforeOnSetKey( func( string, map[Type][]Record, map[Type][]Record ) )
-	SetBeforeDeleteKey( func( string, map[Type][]Record ) )
-	SetBeforeOnDeleteKeyInRecord( func( string, map[Type][]Record, map[Type][]Record ) )
-	SetBeforeOnAppendKeyInRecord( func( string, map[Type][]Record, map[Type][]Record ) )
-	SetOnClear( func( map[string]map[Type][]Record ) )
-	SetOnChange( func( Event, string, interface{}, interface{} ) )
-	SetOnSetKey( func( string, map[Type][]Record, map[Type][]Record ) )
-	SetOnDeleteKey( func( string, map[Type][]Record ) )
-	SetOnDeleteKeyInRecord( func( string, map[Type][]Record, map[Type][]Record ) )
-	SetOnAppendKeyInRecord( func( string, map[Type][]Record, map[Type][]Record ) )
+	//ServeDNS(context.Context, MessageWriter, *Query)
+	Clear()
+	Set(map[string]map[Type][]Record)
+	SetKey(string, map[Type][]Record)
+	Len() int
+	GetKey(string) (map[Type][]Record, bool)
+	DeleteKey(string)
+	DeleteRecordInKey(string, Record)
+	AppendRecordInKey(string, Record)
+	GetAll() map[string]map[Type][]Record
+	SetBeforeOnClear(func(map[string]map[Type][]Record))
+	SetBeforeOnChange(func(Event, string, interface{}, interface{}))
+	SetBeforeOnSetKey(func(string, map[Type][]Record, map[Type][]Record))
+	SetBeforeDeleteKey(func(string, map[Type][]Record))
+	SetBeforeOnDeleteKeyInRecord(func(string, map[Type][]Record, map[Type][]Record))
+	SetBeforeOnAppendKeyInRecord(func(string, map[Type][]Record, map[Type][]Record))
+	SetOnClear(func(map[string]map[Type][]Record))
+	SetOnChange(func(Event, string, interface{}, interface{}))
+	SetOnSetKey(func(string, map[Type][]Record, map[Type][]Record))
+	SetOnDeleteKey(func(string, map[Type][]Record))
+	SetOnDeleteKeyInRecord(func(string, map[Type][]Record, map[Type][]Record))
+	SetOnAppendKeyInRecord(func(string, map[Type][]Record, map[Type][]Record))
 }
 
 // The HandlerFunc type is an adapter to allow the use of ordinary functions as
@@ -53,31 +53,31 @@ func (f HandlerFunc) Clear() {
 
 }
 
-func (f HandlerFunc) Set( v map[string]map[Type][]Record ) {
+func (f HandlerFunc) Set(v map[string]map[Type][]Record) {
 
 }
 
-func (f HandlerFunc) SetKey( k string, v map[Type][]Record ) {
+func (f HandlerFunc) SetKey(k string, v map[Type][]Record) {
 
 }
 
 func (f HandlerFunc) Len() int {
-  return 0
+	return 0
 }
 
-func (f HandlerFunc) GetKey( k string ) (map[Type][]Record, bool) {
-  return nil, false
+func (f HandlerFunc) GetKey(k string) (map[Type][]Record, bool) {
+	return nil, false
 }
 
-func (f HandlerFunc) DeleteKey( k string ) {
-
-}
-
-func (f HandlerFunc) DeleteRecordInKey( k string, r Record ) {
+func (f HandlerFunc) DeleteKey(k string) {
 
 }
 
-func (f HandlerFunc) AppendRecordInKey( k string, r Record ) {
+func (f HandlerFunc) DeleteRecordInKey(k string, r Record) {
+
+}
+
+func (f HandlerFunc) AppendRecordInKey(k string, r Record) {
 
 }
 
@@ -85,51 +85,51 @@ func (f HandlerFunc) GetAll() map[string]map[Type][]Record {
 	return nil
 }
 
-func (f HandlerFunc) SetBeforeOnClear( v func( map[string]map[Type][]Record ) ){
+func (f HandlerFunc) SetBeforeOnClear(v func(map[string]map[Type][]Record)) {
 
 }
 
-func (f HandlerFunc) SetBeforeOnChange( v func( Event, string, interface{}, interface{} ) ){
+func (f HandlerFunc) SetBeforeOnChange(v func(Event, string, interface{}, interface{})) {
 
 }
 
-func (f HandlerFunc) SetBeforeOnSetKey( v func( string, map[Type][]Record, map[Type][]Record ) ){
+func (f HandlerFunc) SetBeforeOnSetKey(v func(string, map[Type][]Record, map[Type][]Record)) {
 
 }
 
-func (f HandlerFunc) SetBeforeDeleteKey( v func( string, map[Type][]Record ) ){
+func (f HandlerFunc) SetBeforeDeleteKey(v func(string, map[Type][]Record)) {
 
 }
 
-func (f HandlerFunc) SetBeforeOnDeleteKeyInRecord( v func( string, map[Type][]Record, map[Type][]Record ) ){
+func (f HandlerFunc) SetBeforeOnDeleteKeyInRecord(v func(string, map[Type][]Record, map[Type][]Record)) {
 
 }
 
-func (f HandlerFunc) SetBeforeOnAppendKeyInRecord( v func( string, map[Type][]Record, map[Type][]Record ) ){
+func (f HandlerFunc) SetBeforeOnAppendKeyInRecord(v func(string, map[Type][]Record, map[Type][]Record)) {
 
 }
 
-func (f HandlerFunc) SetOnClear( v func( map[string]map[Type][]Record ) ){
+func (f HandlerFunc) SetOnClear(v func(map[string]map[Type][]Record)) {
 
 }
 
-func (f HandlerFunc) SetOnChange( v func( Event, string, interface{}, interface{} ) ){
+func (f HandlerFunc) SetOnChange(v func(Event, string, interface{}, interface{})) {
 
 }
 
-func (f HandlerFunc) SetOnSetKey( v func( string, map[Type][]Record, map[Type][]Record ) ){
+func (f HandlerFunc) SetOnSetKey(v func(string, map[Type][]Record, map[Type][]Record)) {
 
 }
 
-func (f HandlerFunc) SetOnDeleteKey( v func( string, map[Type][]Record ) ){
+func (f HandlerFunc) SetOnDeleteKey(v func(string, map[Type][]Record)) {
 
 }
 
-func (f HandlerFunc) SetOnDeleteKeyInRecord( v func( string, map[Type][]Record, map[Type][]Record ) ){
+func (f HandlerFunc) SetOnDeleteKeyInRecord(v func(string, map[Type][]Record, map[Type][]Record)) {
 
 }
 
-func (f HandlerFunc) SetOnAppendKeyInRecord( v func( string, map[Type][]Record, map[Type][]Record ) ){
+func (f HandlerFunc) SetOnAppendKeyInRecord(v func(string, map[Type][]Record, map[Type][]Record)) {
 
 }
 
