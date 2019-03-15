@@ -8,6 +8,7 @@ import (
 	"encoding/binary"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net"
 	"sync"
 	"time"
@@ -1159,7 +1160,7 @@ func (s *SRV) String() string {
 func (s *SRV) FromJSon(v string) error {
 	s.l.Lock()
 	defer s.l.Unlock()
-
+	fmt.Printf("srv v: %s\n", v)
 	return json.Unmarshal([]byte(v), s)
 }
 
