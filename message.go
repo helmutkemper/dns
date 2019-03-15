@@ -20,28 +20,46 @@ var nbo = binary.BigEndian
 // A Type is a type of DNS request and response.
 type Type uint16
 
-func(el Type)String() string {
+func (el Type) String() string {
 	switch el {
-	case 1:  return "TypeA"
-	case 2:  return "TypeNS"
-	case 5:  return "TypeCNAME"
-	case 6:  return "TypeSOA"
-	case 11: return "TypeWKS"
-	case 12: return "TypePTR"
-	case 13: return "TypeHINFO"
-	case 14: return "TypeMINFO"
-	case 15: return "TypeMX"
-	case 16: return "TypeTXT"
-	case 28: return "TypeAAAA"
-	case 33: return "TypeSRV"
-	case 39: return "TypeDNAME"
-	case 41: return "TypeOPT"
-	case 252: return "TypeAXFR"
-	case 255: return "TypeALL"
-	case 257: return "TypeCAA"
-	case 0: return "TypeANY"
+	case 1:
+		return "TypeA"
+	case 2:
+		return "TypeNS"
+	case 5:
+		return "TypeCNAME"
+	case 6:
+		return "TypeSOA"
+	case 11:
+		return "TypeWKS"
+	case 12:
+		return "TypePTR"
+	case 13:
+		return "TypeHINFO"
+	case 14:
+		return "TypeMINFO"
+	case 15:
+		return "TypeMX"
+	case 16:
+		return "TypeTXT"
+	case 28:
+		return "TypeAAAA"
+	case 33:
+		return "TypeSRV"
+	case 39:
+		return "TypeDNAME"
+	case 41:
+		return "TypeOPT"
+	case 252:
+		return "TypeAXFR"
+	case 255:
+		return "TypeALL"
+	case 257:
+		return "TypeCAA"
+	case 0:
+		return "TypeANY"
 	}
-	
+
 	return ""
 }
 
@@ -501,7 +519,7 @@ func (A) Length(Compressor) (int, error) { return 4, nil }
 func (a A) Pack(b []byte, _ Compressor) ([]byte, error) {
 	a.l.Lock()
 	defer a.l.Unlock()
-	
+
 	if len(a.A) < 4 {
 		return nil, errResourceLen
 	}
@@ -512,7 +530,7 @@ func (a A) Pack(b []byte, _ Compressor) ([]byte, error) {
 func (a *A) Unpack(b []byte, _ Decompressor) ([]byte, error) {
 	a.l.Lock()
 	defer a.l.Unlock()
-	
+
 	if len(b) < 4 {
 		return nil, errResourceLen
 	}
@@ -529,20 +547,20 @@ func (a *A) Get() interface{} { return a }
 func (a *A) String() string {
 	a.l.Lock()
 	defer a.l.Unlock()
-	
-	bOut, _ := json.Marshal( a )
-	return string( bOut )
+
+	bOut, _ := json.Marshal(a)
+	return string(bOut)
 }
 
 func (a *A) FromJSon(v string) error {
 	a.l.Lock()
 	defer a.l.Unlock()
-	return json.Unmarshal( []byte( v ), a )
+	return json.Unmarshal([]byte(v), a)
 }
 
 // AAAA is a DNS AAAA record.
 type AAAA struct {
-	l sync.Mutex
+	l    sync.Mutex
 	AAAA net.IP
 }
 
@@ -556,7 +574,7 @@ func (AAAA) Length(Compressor) (int, error) { return 16, nil }
 func (a AAAA) Pack(b []byte, _ Compressor) ([]byte, error) {
 	a.l.Lock()
 	defer a.l.Unlock()
-	
+
 	if len(a.AAAA) != 16 {
 		return nil, errResourceLen
 	}
@@ -567,7 +585,7 @@ func (a AAAA) Pack(b []byte, _ Compressor) ([]byte, error) {
 func (a *AAAA) Unpack(b []byte, _ Decompressor) ([]byte, error) {
 	a.l.Lock()
 	defer a.l.Unlock()
-	
+
 	if len(b) < 16 {
 		return nil, errResourceLen
 	}
@@ -588,21 +606,21 @@ func (a *AAAA) Get() interface{} {
 func (a *AAAA) String() string {
 	a.l.Lock()
 	defer a.l.Unlock()
-	
-	bOut, _ := json.Marshal( a )
-	return string( bOut )
+
+	bOut, _ := json.Marshal(a)
+	return string(bOut)
 }
 
 func (a *AAAA) FromJSon(v string) error {
 	a.l.Lock()
 	defer a.l.Unlock()
-	
-	return json.Unmarshal( []byte( v ), a )
+
+	return json.Unmarshal([]byte(v), a)
 }
 
 // CNAME is a DNS CNAME record.
 type CNAME struct {
-	l sync.Mutex
+	l     sync.Mutex
 	CNAME string
 }
 
@@ -613,7 +631,7 @@ func (CNAME) Type() Type { return TypeCNAME }
 func (c CNAME) Length(com Compressor) (int, error) {
 	c.l.Lock()
 	defer c.l.Unlock()
-	
+
 	return com.Length(c.CNAME)
 }
 
@@ -621,7 +639,7 @@ func (c CNAME) Length(com Compressor) (int, error) {
 func (c CNAME) Pack(b []byte, com Compressor) ([]byte, error) {
 	c.l.Lock()
 	defer c.l.Unlock()
-	
+
 	return com.Pack(b, c.CNAME)
 }
 
@@ -629,7 +647,7 @@ func (c CNAME) Pack(b []byte, com Compressor) ([]byte, error) {
 func (c *CNAME) Unpack(b []byte, dec Decompressor) ([]byte, error) {
 	c.l.Lock()
 	defer c.l.Unlock()
-	
+
 	var err error
 	c.CNAME, b, err = dec.Unpack(b)
 	return b, err
@@ -644,20 +662,20 @@ func (c *CNAME) Get() interface{} {
 func (c *CNAME) String() string {
 	c.l.Lock()
 	defer c.l.Unlock()
-	
-	bOut, _ := json.Marshal( c )
-	return string( bOut )
+
+	bOut, _ := json.Marshal(c)
+	return string(bOut)
 }
 
 func (c *CNAME) FromJSon(v string) error {
 	c.l.Lock()
 	defer c.l.Unlock()
-	return json.Unmarshal( []byte( v ), c )
+	return json.Unmarshal([]byte(v), c)
 }
 
 // SOA is a DNS SOA record.
 type SOA struct {
-	l sync.Mutex
+	l       sync.Mutex
 	NS      string
 	MBox    string
 	Serial  int
@@ -674,7 +692,7 @@ func (SOA) Type() Type { return TypeSOA }
 func (s SOA) Length(com Compressor) (int, error) {
 	s.l.Lock()
 	defer s.l.Unlock()
-	
+
 	n, err := com.Length(s.NS, s.MBox)
 	if err != nil {
 		return 0, err
@@ -686,7 +704,7 @@ func (s SOA) Length(com Compressor) (int, error) {
 func (s SOA) Pack(b []byte, com Compressor) ([]byte, error) {
 	s.l.Lock()
 	defer s.l.Unlock()
-	
+
 	var err error
 	if b, err = com.Pack(b, s.NS); err != nil {
 		return nil, err
@@ -733,7 +751,7 @@ func (s SOA) Pack(b []byte, com Compressor) ([]byte, error) {
 func (s *SOA) Unpack(b []byte, dec Decompressor) ([]byte, error) {
 	s.l.Lock()
 	defer s.l.Unlock()
-	
+
 	var err error
 	if s.NS, b, err = dec.Unpack(b); err != nil {
 		return nil, err
@@ -772,21 +790,21 @@ func (s *SOA) Get() interface{} {
 func (s *SOA) String() string {
 	s.l.Lock()
 	defer s.l.Unlock()
-	
-	bOut, _ := json.Marshal( s )
-	return string( bOut )
+
+	bOut, _ := json.Marshal(s)
+	return string(bOut)
 }
 
 func (s *SOA) FromJSon(v string) error {
 	s.l.Lock()
 	defer s.l.Unlock()
-	
-	return json.Unmarshal( []byte( v ), s )
+
+	return json.Unmarshal([]byte(v), s)
 }
 
 // PTR is a DNS PTR record.
 type PTR struct {
-	l sync.Mutex
+	l   sync.Mutex
 	PTR string
 }
 
@@ -797,7 +815,7 @@ func (PTR) Type() Type { return TypePTR }
 func (p PTR) Length(com Compressor) (int, error) {
 	p.l.Lock()
 	defer p.l.Unlock()
-	
+
 	return com.Length(p.PTR)
 }
 
@@ -805,7 +823,7 @@ func (p PTR) Length(com Compressor) (int, error) {
 func (p PTR) Pack(b []byte, com Compressor) ([]byte, error) {
 	p.l.Lock()
 	defer p.l.Unlock()
-	
+
 	return com.Pack(b, p.PTR)
 }
 
@@ -813,7 +831,7 @@ func (p PTR) Pack(b []byte, com Compressor) ([]byte, error) {
 func (p *PTR) Unpack(b []byte, dec Decompressor) ([]byte, error) {
 	p.l.Lock()
 	defer p.l.Unlock()
-	
+
 	var err error
 	p.PTR, b, err = dec.Unpack(b)
 	return b, err
@@ -822,28 +840,28 @@ func (p *PTR) Unpack(b []byte, dec Decompressor) ([]byte, error) {
 func (p *PTR) Get() interface{} {
 	p.l.Lock()
 	defer p.l.Unlock()
-	
+
 	return p
 }
 
 func (p *PTR) String() string {
 	p.l.Lock()
 	defer p.l.Unlock()
-	
-	bOut, _ := json.Marshal( p )
-	return string( bOut )
+
+	bOut, _ := json.Marshal(p)
+	return string(bOut)
 }
 
 func (p *PTR) FromJSon(v string) error {
 	p.l.Lock()
 	defer p.l.Unlock()
-	
-	return json.Unmarshal( []byte( v ), p )
+
+	return json.Unmarshal([]byte(v), p)
 }
 
 // MX is a DNS MX record.
 type MX struct {
-	l sync.Mutex
+	l    sync.Mutex
 	Pref int
 	MX   string
 }
@@ -855,7 +873,7 @@ func (MX) Type() Type { return TypeMX }
 func (m MX) Length(com Compressor) (int, error) {
 	m.l.Lock()
 	defer m.l.Unlock()
-	
+
 	n, err := com.Length(m.MX)
 	if err != nil {
 		return 0, err
@@ -867,7 +885,7 @@ func (m MX) Length(com Compressor) (int, error) {
 func (m MX) Pack(b []byte, com Compressor) ([]byte, error) {
 	m.l.Lock()
 	defer m.l.Unlock()
-	
+
 	pref := uint16(m.Pref)
 	if int(pref) != m.Pref {
 		return nil, errFieldOverflow
@@ -883,7 +901,7 @@ func (m MX) Pack(b []byte, com Compressor) ([]byte, error) {
 func (m *MX) Unpack(b []byte, dec Decompressor) ([]byte, error) {
 	m.l.Lock()
 	defer m.l.Unlock()
-	
+
 	if len(b) < 2 {
 		return nil, errResourceLen
 	}
@@ -898,28 +916,28 @@ func (m *MX) Unpack(b []byte, dec Decompressor) ([]byte, error) {
 func (m *MX) Get() interface{} {
 	m.l.Lock()
 	defer m.l.Unlock()
-	
+
 	return m
 }
 
 func (m *MX) String() string {
 	m.l.Lock()
 	defer m.l.Unlock()
-	
-	bOut, _ := json.Marshal( m )
-	return string( bOut )
+
+	bOut, _ := json.Marshal(m)
+	return string(bOut)
 }
 
 func (m *MX) FromJSon(v string) error {
 	m.l.Lock()
 	defer m.l.Unlock()
-	
-	return json.Unmarshal( []byte( v ), m )
+
+	return json.Unmarshal([]byte(v), m)
 }
 
 // NS is a DNS MX record.
 type NS struct {
-	l sync.Mutex
+	l  sync.Mutex
 	NS string
 }
 
@@ -930,7 +948,7 @@ func (NS) Type() Type { return TypeNS }
 func (n NS) Length(com Compressor) (int, error) {
 	n.l.Lock()
 	defer n.l.Unlock()
-	
+
 	return com.Length(n.NS)
 }
 
@@ -938,7 +956,7 @@ func (n NS) Length(com Compressor) (int, error) {
 func (n NS) Pack(b []byte, com Compressor) ([]byte, error) {
 	n.l.Lock()
 	defer n.l.Unlock()
-	
+
 	return com.Pack(b, n.NS)
 }
 
@@ -946,7 +964,7 @@ func (n NS) Pack(b []byte, com Compressor) ([]byte, error) {
 func (n *NS) Unpack(b []byte, dec Decompressor) ([]byte, error) {
 	n.l.Lock()
 	defer n.l.Unlock()
-	
+
 	var err error
 	n.NS, b, err = dec.Unpack(b)
 	return b, err
@@ -955,28 +973,28 @@ func (n *NS) Unpack(b []byte, dec Decompressor) ([]byte, error) {
 func (n *NS) Get() interface{} {
 	n.l.Lock()
 	defer n.l.Unlock()
-	
+
 	return n
 }
 
 func (n *NS) String() string {
 	n.l.Lock()
 	defer n.l.Unlock()
-	
-	bOut, _ := json.Marshal( n )
-	return string( bOut )
+
+	bOut, _ := json.Marshal(n)
+	return string(bOut)
 }
 
 func (n *NS) FromJSon(v string) error {
 	n.l.Lock()
 	defer n.l.Unlock()
-	
-	return json.Unmarshal( []byte( v ), n )
+
+	return json.Unmarshal([]byte(v), n)
 }
 
 // TXT is a DNS TXT record.
 type TXT struct {
-	l sync.Mutex
+	l   sync.Mutex
 	TXT []string
 }
 
@@ -987,7 +1005,7 @@ func (TXT) Type() Type { return TypeTXT }
 func (t TXT) Length(_ Compressor) (int, error) {
 	t.l.Lock()
 	defer t.l.Unlock()
-	
+
 	var n int
 	for _, s := range t.TXT {
 		n += 1 + len(s)
@@ -999,7 +1017,7 @@ func (t TXT) Length(_ Compressor) (int, error) {
 func (t TXT) Pack(b []byte, _ Compressor) ([]byte, error) {
 	t.l.Lock()
 	defer t.l.Unlock()
-	
+
 	for _, s := range t.TXT {
 		if len(s) > 255 {
 			return nil, errSegTooLong
@@ -1014,7 +1032,7 @@ func (t TXT) Pack(b []byte, _ Compressor) ([]byte, error) {
 func (t *TXT) Unpack(b []byte, _ Decompressor) ([]byte, error) {
 	t.l.Lock()
 	defer t.l.Unlock()
-	
+
 	var txts []string
 	for len(b) > 0 {
 		txtlen := int(b[0])
@@ -1033,28 +1051,28 @@ func (t *TXT) Unpack(b []byte, _ Decompressor) ([]byte, error) {
 func (t *TXT) Get() interface{} {
 	t.l.Lock()
 	defer t.l.Unlock()
-	
+
 	return t
 }
 
 func (t *TXT) String() string {
 	t.l.Lock()
 	defer t.l.Unlock()
-	
-	bOut, _ := json.Marshal( t )
-	return string( bOut )
+
+	bOut, _ := json.Marshal(t)
+	return string(bOut)
 }
 
 func (t *TXT) FromJSon(v string) error {
 	t.l.Lock()
 	defer t.l.Unlock()
-	
-	return json.Unmarshal( []byte( v ), t )
+
+	return json.Unmarshal([]byte(v), t)
 }
 
 // SRV is a DNS SRV record.
 type SRV struct {
-	l sync.Mutex
+	l        sync.Mutex
 	Priority int
 	Weight   int
 	Port     int
@@ -1068,7 +1086,7 @@ func (SRV) Type() Type { return TypeSRV }
 func (s SRV) Length(_ Compressor) (int, error) {
 	s.l.Lock()
 	defer s.l.Unlock()
-	
+
 	n, err := compressor{}.Length(s.Target)
 	if err != nil {
 		return 0, err
@@ -1080,7 +1098,7 @@ func (s SRV) Length(_ Compressor) (int, error) {
 func (s SRV) Pack(b []byte, _ Compressor) ([]byte, error) {
 	s.l.Lock()
 	defer s.l.Unlock()
-	
+
 	var (
 		priority = uint16(s.Priority)
 		weight   = uint16(s.Weight)
@@ -1109,7 +1127,7 @@ func (s SRV) Pack(b []byte, _ Compressor) ([]byte, error) {
 func (s *SRV) Unpack(b []byte, _ Decompressor) ([]byte, error) {
 	s.l.Lock()
 	defer s.l.Unlock()
-	
+
 	if len(b) < 6 {
 		return nil, errResourceLen
 	}
@@ -1126,28 +1144,28 @@ func (s *SRV) Unpack(b []byte, _ Decompressor) ([]byte, error) {
 func (s *SRV) Get() interface{} {
 	s.l.Lock()
 	defer s.l.Unlock()
-	
+
 	return s
 }
 
 func (s *SRV) String() string {
 	s.l.Lock()
 	defer s.l.Unlock()
-	
-	bOut, _ := json.Marshal( s )
-	return string( bOut )
+
+	bOut, _ := json.Marshal(s)
+	return string(bOut)
 }
 
 func (s *SRV) FromJSon(v string) error {
 	s.l.Lock()
 	defer s.l.Unlock()
-	
-	return json.Unmarshal( []byte( v ), s )
+
+	return json.Unmarshal([]byte(v), s)
 }
 
 // DNAME is a DNS DNAME record.
 type DNAME struct {
-	l sync.Mutex
+	l     sync.Mutex
 	DNAME string
 }
 
@@ -1158,7 +1176,7 @@ func (DNAME) Type() Type { return TypeDNAME }
 func (d DNAME) Length(com Compressor) (int, error) {
 	d.l.Lock()
 	defer d.l.Unlock()
-	
+
 	return com.Length(d.DNAME)
 }
 
@@ -1166,7 +1184,7 @@ func (d DNAME) Length(com Compressor) (int, error) {
 func (d DNAME) Pack(b []byte, com Compressor) ([]byte, error) {
 	d.l.Lock()
 	defer d.l.Unlock()
-	
+
 	return com.Pack(b, d.DNAME)
 }
 
@@ -1174,7 +1192,7 @@ func (d DNAME) Pack(b []byte, com Compressor) ([]byte, error) {
 func (d *DNAME) Unpack(b []byte, dec Decompressor) ([]byte, error) {
 	d.l.Lock()
 	defer d.l.Unlock()
-	
+
 	var err error
 	d.DNAME, b, err = dec.Unpack(b)
 	return b, err
@@ -1183,28 +1201,28 @@ func (d *DNAME) Unpack(b []byte, dec Decompressor) ([]byte, error) {
 func (d *DNAME) Get() interface{} {
 	d.l.Lock()
 	defer d.l.Unlock()
-	
+
 	return d
 }
 
 func (d *DNAME) String() string {
 	d.l.Lock()
 	defer d.l.Unlock()
-	
-	bOut, _ := json.Marshal( d )
-	return string( bOut )
+
+	bOut, _ := json.Marshal(d)
+	return string(bOut)
 }
 
 func (d *DNAME) FromJSon(v string) error {
 	d.l.Lock()
 	defer d.l.Unlock()
-	
-	return json.Unmarshal( []byte( v ), d )
+
+	return json.Unmarshal([]byte(v), d)
 }
 
 // OPT is a DNS OPT record.
 type OPT struct {
-	l sync.Mutex
+	l       sync.Mutex
 	Options []edns.Option
 }
 
@@ -1215,7 +1233,7 @@ func (o OPT) Type() Type { return TypeOPT }
 func (o OPT) Length(_ Compressor) (int, error) {
 	o.l.Lock()
 	defer o.l.Unlock()
-	
+
 	var n int
 	for _, opt := range o.Options {
 		n += opt.Length()
@@ -1227,7 +1245,7 @@ func (o OPT) Length(_ Compressor) (int, error) {
 func (o OPT) Pack(b []byte, _ Compressor) ([]byte, error) {
 	o.l.Lock()
 	defer o.l.Unlock()
-	
+
 	var err error
 	for _, opt := range o.Options {
 		if b, err = opt.Pack(b); err != nil {
@@ -1241,7 +1259,7 @@ func (o OPT) Pack(b []byte, _ Compressor) ([]byte, error) {
 func (o *OPT) Unpack(b []byte, _ Decompressor) ([]byte, error) {
 	o.l.Lock()
 	defer o.l.Unlock()
-	
+
 	o.Options = nil
 
 	var err error
@@ -1258,28 +1276,28 @@ func (o *OPT) Unpack(b []byte, _ Decompressor) ([]byte, error) {
 func (o *OPT) Get() interface{} {
 	o.l.Lock()
 	defer o.l.Unlock()
-	
+
 	return o
 }
 
 func (o *OPT) String() string {
 	o.l.Lock()
 	defer o.l.Unlock()
-	
-	bOut, _ := json.Marshal( o )
-	return string( bOut )
+
+	bOut, _ := json.Marshal(o)
+	return string(bOut)
 }
 
 func (o *OPT) FromJSon(v string) error {
 	o.l.Lock()
 	defer o.l.Unlock()
-	
-	return json.Unmarshal( []byte( v ), o )
+
+	return json.Unmarshal([]byte(v), o)
 }
 
 // type CAA is a DNS CAA record.
 type CAA struct {
-	l sync.Mutex
+	l              sync.Mutex
 	IssuerCritical bool
 
 	Tag   string
@@ -1293,7 +1311,7 @@ func (CAA) Type() Type { return TypeCAA }
 func (c CAA) Length(_ Compressor) (int, error) {
 	c.l.Lock()
 	defer c.l.Unlock()
-	
+
 	return 2 + len(c.Tag) + len(c.Value), nil
 }
 
@@ -1301,7 +1319,7 @@ func (c CAA) Length(_ Compressor) (int, error) {
 func (c CAA) Pack(b []byte, _ Compressor) ([]byte, error) {
 	c.l.Lock()
 	defer c.l.Unlock()
-	
+
 	buf := make([]byte, 2, 2+len(c.Tag)+len(c.Value))
 
 	if c.IssuerCritical {
@@ -1327,7 +1345,7 @@ func (c CAA) Pack(b []byte, _ Compressor) ([]byte, error) {
 func (c *CAA) Unpack(b []byte, _ Decompressor) ([]byte, error) {
 	c.l.Lock()
 	defer c.l.Unlock()
-	
+
 	if len(b) < 2 {
 		return nil, errResourceLen
 	}
@@ -1353,21 +1371,21 @@ func (c *CAA) Unpack(b []byte, _ Decompressor) ([]byte, error) {
 func (c *CAA) Get() interface{} {
 	c.l.Lock()
 	defer c.l.Unlock()
-	
+
 	return c
 }
 
 func (c *CAA) String() string {
 	c.l.Lock()
 	defer c.l.Unlock()
-	
-	bOut, _ := json.Marshal( c )
-	return string( bOut )
+
+	bOut, _ := json.Marshal(c)
+	return string(bOut)
 }
 
 func (c *CAA) FromJSon(v string) error {
 	c.l.Lock()
 	defer c.l.Unlock()
-	
-	return json.Unmarshal( []byte( v ), c )
+
+	return json.Unmarshal([]byte(v), c)
 }

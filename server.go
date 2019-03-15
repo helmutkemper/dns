@@ -27,86 +27,85 @@ type Server struct {
 	ErrorLog *log.Logger
 }
 
-func (s *Server)Clear(){
+func (s *Server) Clear() {
 	s.Handler.Clear()
 }
 
-func (s *Server) Set( v map[string]map[Type][]Record ){
-	s.Handler.Set( v )
+func (s *Server) Set(v map[string]map[Type][]Record) {
+	s.Handler.Set(v)
 }
 
-func (s *Server) SetKey( k string, v map[Type][]Record ) {
-	s.Handler.SetKey( k, v )
+func (s *Server) SetKey(k string, v map[Type][]Record) {
+	s.Handler.SetKey(k, v)
 }
 
 func (s *Server) Len() int {
 	return s.Handler.Len()
 }
 
-func (s *Server) GetKey( k string ) (map[Type][]Record, bool) {
-	return s.Handler.GetKey( k )
+func (s *Server) GetKey(k string) (map[Type][]Record, bool) {
+	return s.Handler.GetKey(k)
 }
 
-func (s *Server) DeleteKey( k string ) {
-	s.Handler.DeleteKey( k )
+func (s *Server) DeleteKey(k string) {
+	s.Handler.DeleteKey(k)
 }
-func (s *Server) DeleteRecordInKey( k string, r Record ) {
-	s.Handler.DeleteRecordInKey( k, r )
+func (s *Server) DeleteRecordInKey(k string, r Record) {
+	s.Handler.DeleteRecordInKey(k, r)
 }
-func (s *Server) AppendRecordInKey( k string, r Record ) {
-	s.Handler.AppendRecordInKey( k, r )
+func (s *Server) AppendRecordInKey(k string, r Record) {
+	s.Handler.AppendRecordInKey(k, r)
 }
 func (s *Server) GetAll() map[string]map[Type][]Record {
 	return s.Handler.GetAll()
 }
 
-
-func(el *Server)SetBeforeOnClear( v func( map[string]map[Type][]Record ) ){
-	el.Handler.SetBeforeOnClear( v )
+func (el *Server) SetBeforeOnClear(v func(map[string]map[Type][]Record)) {
+	el.Handler.SetBeforeOnClear(v)
 }
 
-func(el *Server)SetBeforeOnChange( v func( Event, string, interface{}, interface{} ) ){
-	el.Handler.SetBeforeOnChange( v )
+func (el *Server) SetBeforeOnChange(v func(Event, string, interface{}, interface{})) {
+	el.Handler.SetBeforeOnChange(v)
 }
 
-func(el *Server)SetBeforeOnSetKey( v func( string, map[Type][]Record, map[Type][]Record ) ){
-	el.Handler.SetBeforeOnSetKey( v )
+func (el *Server) SetBeforeOnSetKey(v func(string, map[Type][]Record, map[Type][]Record)) {
+	el.Handler.SetBeforeOnSetKey(v)
 }
 
-func(el *Server)SetBeforeDeleteKey( v func( string, map[Type][]Record ) ){
-	el.Handler.SetBeforeDeleteKey( v )
+func (el *Server) SetBeforeDeleteKey(v func(string, map[Type][]Record)) {
+	el.Handler.SetBeforeDeleteKey(v)
 }
 
-func(el *Server)SetBeforeOnDeleteKeyInRecord( v func( string, map[Type][]Record, map[Type][]Record ) ){
-	el.Handler.SetBeforeOnDeleteKeyInRecord( v )
+func (el *Server) SetBeforeOnDeleteKeyInRecord(v func(string, map[Type][]Record, map[Type][]Record)) {
+	el.Handler.SetBeforeOnDeleteKeyInRecord(v)
 }
 
-func(el *Server)SetBeforeOnAppendKeyInRecord( v func( string, map[Type][]Record, map[Type][]Record ) ){
-	el.Handler.SetBeforeOnAppendKeyInRecord( v )
+func (el *Server) SetBeforeOnAppendKeyInRecord(v func(string, map[Type][]Record, map[Type][]Record)) {
+	el.Handler.SetBeforeOnAppendKeyInRecord(v)
 }
 
-func(el *Server)SetOnClear( v func( map[string]map[Type][]Record ) ){
-	el.Handler.SetOnClear( v )
+func (el *Server) SetOnClear(v func(map[string]map[Type][]Record)) {
+	el.Handler.SetOnClear(v)
 }
 
-func(el *Server)SetOnChange( v func( Event, string, interface{}, interface{} ) ){
-	el.Handler.SetOnChange( v )
+func (el *Server) SetOnChange(v func(Event, string, interface{}, interface{})) {
+	el.Handler.SetOnChange(v)
 }
 
-func(el *Server)SetOnSetKey( v func( string, map[Type][]Record, map[Type][]Record ) ){
-	el.Handler.SetOnSetKey( v )
+func (el *Server) SetOnSetKey(v func(string, map[Type][]Record, map[Type][]Record)) {
+	el.Handler.SetOnSetKey(v)
 }
 
-func(el *Server)SetOnDeleteKey( v func( string, map[Type][]Record ) ){
-	el.Handler.SetOnDeleteKey( v )
+func (el *Server) SetOnDeleteKey(v func(string, map[Type][]Record)) {
+	el.Handler.SetOnDeleteKey(v)
 }
 
-func(el *Server)SetOnDeleteKeyInRecord( v func( string, map[Type][]Record, map[Type][]Record ) ){
-	el.Handler.SetOnDeleteKeyInRecord( v )
+func (el *Server) SetOnDeleteKeyInRecord(v func(string, map[Type][]Record, map[Type][]Record)) {
+	el.Handler.SetOnDeleteKeyInRecord(v)
 }
 
-func(el *Server)SetOnAppendKeyInRecord( v func( string, map[Type][]Record, map[Type][]Record ) ){
-	el.Handler.SetOnAppendKeyInRecord( v )
+func (el *Server) SetOnAppendKeyInRecord(v func(string, map[Type][]Record, map[Type][]Record)) {
+	el.Handler.SetOnAppendKeyInRecord(v)
 }
 
 // ListenAndServe listens on both the TCP and UDP network address s.Addr and

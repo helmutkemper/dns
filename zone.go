@@ -16,88 +16,88 @@ type Zone struct {
 	RRs RRSet
 }
 
-func(z *Zone) Clear(){
-  z.RRs.Clear()
+func (z *Zone) Clear() {
+	z.RRs.Clear()
 }
 
-func(z *Zone) Set( v map[string]map[Type][]Record ){
-	z.RRs.Set( v )
+func (z *Zone) Set(v map[string]map[Type][]Record) {
+	z.RRs.Set(v)
 }
 
-func(z *Zone) SetKey( k string, v map[Type][]Record ){
-	z.RRs.SetKey( k, v )
+func (z *Zone) SetKey(k string, v map[Type][]Record) {
+	z.RRs.SetKey(k, v)
 }
 
-func(z *Zone) Len() int {
-  return z.RRs.Len()
+func (z *Zone) Len() int {
+	return z.RRs.Len()
 }
 
-func(z *Zone) GetKey( k string ) (map[Type][]Record, bool) {
-  return z.RRs.GetKey( k )
+func (z *Zone) GetKey(k string) (map[Type][]Record, bool) {
+	return z.RRs.GetKey(k)
 }
 
-func(z *Zone) DeleteKey( k string ) {
-  z.RRs.DeleteKey( k )
+func (z *Zone) DeleteKey(k string) {
+	z.RRs.DeleteKey(k)
 }
 
-func(z *Zone) DeleteRecordInKey( k string, r Record ) {
-  z.RRs.DeleteRecordInKey( k, r )
+func (z *Zone) DeleteRecordInKey(k string, r Record) {
+	z.RRs.DeleteRecordInKey(k, r)
 }
 
-func(z *Zone) AppendRecordInKey( k string, r Record ) {
-	z.RRs.AppendRecordInKey( k, r )
+func (z *Zone) AppendRecordInKey(k string, r Record) {
+	z.RRs.AppendRecordInKey(k, r)
 }
 
-func(z *Zone) GetAll() map[string]map[Type][]Record {
-  return z.RRs.GetAll()
+func (z *Zone) GetAll() map[string]map[Type][]Record {
+	return z.RRs.GetAll()
 }
 
-func(z *Zone) SetBeforeOnClear( v func( map[string]map[Type][]Record ) ){
-	z.RRs.SetBeforeOnClear( v )
+func (z *Zone) SetBeforeOnClear(v func(map[string]map[Type][]Record)) {
+	z.RRs.SetBeforeOnClear(v)
 }
 
-func(z *Zone) SetBeforeOnChange( v func( Event, string, interface{}, interface{} ) ){
-	z.RRs.SetBeforeOnChange( v )
+func (z *Zone) SetBeforeOnChange(v func(Event, string, interface{}, interface{})) {
+	z.RRs.SetBeforeOnChange(v)
 }
 
-func(z *Zone) SetBeforeOnSetKey( v func( string, map[Type][]Record, map[Type][]Record ) ){
-	z.RRs.SetBeforeOnSetKey( v )
+func (z *Zone) SetBeforeOnSetKey(v func(string, map[Type][]Record, map[Type][]Record)) {
+	z.RRs.SetBeforeOnSetKey(v)
 }
 
-func(z *Zone) SetBeforeDeleteKey( v func( string, map[Type][]Record ) ){
-	z.RRs.SetBeforeDeleteKey( v )
+func (z *Zone) SetBeforeDeleteKey(v func(string, map[Type][]Record)) {
+	z.RRs.SetBeforeDeleteKey(v)
 }
 
-func(z *Zone) SetBeforeOnDeleteKeyInRecord( v func( string, map[Type][]Record, map[Type][]Record ) ){
-	z.RRs.SetBeforeOnDeleteKeyInRecord( v )
+func (z *Zone) SetBeforeOnDeleteKeyInRecord(v func(string, map[Type][]Record, map[Type][]Record)) {
+	z.RRs.SetBeforeOnDeleteKeyInRecord(v)
 }
 
-func(z *Zone) SetBeforeOnAppendKeyInRecord( v func( string, map[Type][]Record, map[Type][]Record ) ){
-	z.RRs.SetBeforeOnAppendKeyInRecord( v )
+func (z *Zone) SetBeforeOnAppendKeyInRecord(v func(string, map[Type][]Record, map[Type][]Record)) {
+	z.RRs.SetBeforeOnAppendKeyInRecord(v)
 }
 
-func(z *Zone) SetOnClear( v func( map[string]map[Type][]Record ) ){
-	z.RRs.SetOnClear( v )
+func (z *Zone) SetOnClear(v func(map[string]map[Type][]Record)) {
+	z.RRs.SetOnClear(v)
 }
 
-func(z *Zone) SetOnChange( v func( Event, string, interface{}, interface{} ) ){
-	z.RRs.SetOnChange( v )
+func (z *Zone) SetOnChange(v func(Event, string, interface{}, interface{})) {
+	z.RRs.SetOnChange(v)
 }
 
-func(z *Zone) SetOnSetKey( v func( string, map[Type][]Record, map[Type][]Record ) ){
-	z.RRs.SetOnSetKey( v )
+func (z *Zone) SetOnSetKey(v func(string, map[Type][]Record, map[Type][]Record)) {
+	z.RRs.SetOnSetKey(v)
 }
 
-func(z *Zone) SetOnDeleteKey( v func( string, map[Type][]Record ) ){
-	z.RRs.SetOnDeleteKey( v )
+func (z *Zone) SetOnDeleteKey(v func(string, map[Type][]Record)) {
+	z.RRs.SetOnDeleteKey(v)
 }
 
-func(z *Zone) SetOnDeleteKeyInRecord( v func( string, map[Type][]Record, map[Type][]Record ) ){
-	z.RRs.SetOnDeleteKeyInRecord( v )
+func (z *Zone) SetOnDeleteKeyInRecord(v func(string, map[Type][]Record, map[Type][]Record)) {
+	z.RRs.SetOnDeleteKeyInRecord(v)
 }
 
-func(z *Zone) SetOnAppendKeyInRecord( v func( string, map[Type][]Record, map[Type][]Record ) ){
-	z.RRs.SetOnAppendKeyInRecord( v )
+func (z *Zone) SetOnAppendKeyInRecord(v func(string, map[Type][]Record, map[Type][]Record)) {
+	z.RRs.SetOnAppendKeyInRecord(v)
 }
 
 // ServeDNS answers DNS queries in zone z.
